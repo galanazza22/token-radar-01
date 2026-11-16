@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar: pre-token protocols ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="mark" aria-hidden="true">◉</div>
+    <div>
+      <h1>Token Radar</h1>
+      <p class="tag">Which pre-token protocol is worth farming next, and what do I do about it.</p>
+    </div>
+  </div>
+  <div class="meta" id="meta"></div>
+</header>
+
+<nav class="tabs" id="tabs" aria-label="Views">
+  <a href="?view=board" data-tab="board">Pre-token board</a>
+  <a href="?view=board&amp;tab=live" data-tab="live">Live tokens</a>
+  <a href="#model">How the model works</a>
+</nav>
+
+<main id="app" aria-busy="true"></main>
+
+<section class="model" id="model" aria-label="How the value model works">
+  <h2>How the value model works</h2>
+  <p class="lede">Every implied value follows from the snapshot's own figures. No protocol name is
+  ever special-cased: the same function scores every row.</p>
+  <div class="formula">
+    <code>implied = TVL × 0.30 × growth × maturity × chains × category</code>
+  </div>
+  <div class="cols">
+    <div>
+      <h3>Growth</h3>
+      <p>Seven-day TVL change, clamped to −50%…+150% (unreported counts as 0):<br>
+      <code>growth = 1 + change × 0.006</code></p>
+      <h3>Maturity</h3>
+      <p>Days since DefiLlama began tracking it, up to 1,460 days (unknown counts as 365):<br>
+      <code>maturity = 0.70 + 0.30 × age ÷ 1460</code></p>
+      <h3>Reach</h3>
+      <p>One chain counts as 1.00; each extra chain adds 0.02, up to 1.10:<br>
+      <code>chains = 1 + 0.02 × min(chains − 1, 5)</code></p>
+    </div>
+    <div>
+      <h3>Category factor</h3>
+      <table class="mini">
+        <tr><td>Dexs</td><td>1.15</td></tr>
+        <tr><td>Lending, Derivatives, Prediction Market</td><td>1.10</td></tr>
+        <tr><td>RWA, CDP, Basis Trading</td><td>1.05</td></tr>
+        <tr><td>Everything else</td><td>1.00</td></tr>
+        <tr><td>Insurance</td><td>0.95</td></tr>
+        <tr><td>Stablecoin Wrapper</td><td>0.90</td></tr>
+      </table>
+      <h3>What the board leaves out</h3>
+      <p>A protocol is ranked only when it records no token and is not a bridge, a liquid-staking or
+      restaking product, a CEX, a versioned pool, a wrapped or staked product, or a protocol whose
+      name begins with an exchange's name. Protocols above the floor that the watchlist leaves out
+      are not ranked: the house's rule screened them out, and this board does not second-guess it.</p>
+    </div>
+  </div>
+  <p class="caveat">“Records no token” is DefiLlama's record, not proof a protocol has none. The implied
+  value is this radar's own claim about what a launch would be worth if the protocol's record stayed
+  as it is — never a prediction that a token is issued, or when.</p>
+</section>
+
+<footer class="foot" id="foot"></footer>
+
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
